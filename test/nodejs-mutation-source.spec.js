@@ -128,6 +128,23 @@ describe("Mutation Source", function () {
       expect(wasCalled).toBe(true);
 
     });
+
+    it('does clean up targets that do not have observers', function () {
+      const source = new NodeJsMutationEmulator(0);
+
+      let target = jsdom(undefined).createTextNode("foo");
+
+      source.registerObserver({ target });
+
+      const foundTarget = source.observers.findIndex(o => o.target === target);
+      expect(foundTarget).toBeGreaterThan(-1);
+
+      source.observers.splice(foundTarget, 1);
+
+      source.cycle();
+
+      const targetNotInObserver = source.targets.find(t => t.target === target);
+      expect(targetNotInObserver).toBe(undefined);
+    });
   });
 });
-

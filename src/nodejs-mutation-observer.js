@@ -27,6 +27,8 @@ export class NodeJsMutationObserver implements MutationObserver {
   }
 
   takeRecords(): MutationRecord[] {
-    throw new Error('NotImplementedException');
+    let records = this.source.cycleMutations.slice();
+    this.source.cycleMutations.length = 0;
+    return records;
   }
 }

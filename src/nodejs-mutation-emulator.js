@@ -57,8 +57,11 @@ export class NodeJsMutationEmulator {
     this._cycleTidy();
   }
 
+  // remove targets no longer having any observer
   _cycleTidy() {
-    //remove targets no longer having any observer;
+    this.targets = this.targets.filter(t => {
+      return !!(this.observers.find(o => o.target === t.target));
+    });
   }
 
   _cycleReport() {
